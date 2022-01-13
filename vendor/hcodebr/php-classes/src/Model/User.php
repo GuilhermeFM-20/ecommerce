@@ -8,7 +8,7 @@ use \Hcode\Model;
 class User extends Model {
 
     const SESSION = 'User';
-    const SECRET = 'HcodePhp7_Secret'
+    const SECRET = 'HcodePhp7_Secret';
 
     public static function login($login, $password){
 
@@ -157,7 +157,7 @@ class User extends Model {
 
                 $dataRecovery = $results2[0];
 
-                base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_128,User::SECRET,$dataRecovery["idrecovery"],MCRYPT_MODE_ECB))
+                base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_128,User::SECRET,$dataRecovery["idrecovery"],MCRYPT_MODE_ECB));
 
                 $link = "http://www.hcodecommerce.com.br/admin/forgot/reset?code= $code";
 
@@ -177,7 +177,7 @@ class User extends Model {
 
     public static function validForgotDecrypt($code){
 
-        code = base64_decode($code);
+        $code = base64_decode($code);
 
 		$idrecovery = openssl_decrypt($code, 'AES-128-CBC', pack("a16", User::SECRET), 0, pack("a16", User::SECRET_IV));
 
@@ -215,8 +215,8 @@ class User extends Model {
 
         $sql->query(" UPDATE tb_users SET despassword = :password WHERE iduser = :iduser", array(
             ":password"=>$password,
-            ":iduser"=>$this->getiduser(); 
-        ))
+            ":iduser"=>$this->getiduser()
+        ));
 
     }
 }
