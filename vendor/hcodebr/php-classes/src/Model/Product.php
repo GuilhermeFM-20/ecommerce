@@ -4,6 +4,7 @@ namespace Hcode\Model;
 
 use \Hcode\Model;
 use \Hcode\DB\Sql;
+use \Hcode\Mailer;
 
 class Product extends Model{
 
@@ -14,6 +15,21 @@ class Product extends Model{
         return $sql->select(' SELECT * FROM tb_products ORDER BY desproduct');
 
     }
+
+    public static function checkList($list)
+	{
+
+		foreach ($list as &$row) {
+			
+			$p = new Product();
+			$p->setData($row);
+			$row = $p->getValues();
+
+		}
+
+		return $list;
+
+	}
 
     public function save(){
 
@@ -59,9 +75,9 @@ class Product extends Model{
 
     private function checkPhoto(){
 
-        if( file_exists($_SERVER["DOCUMENT_ROOT"].DIRECTORY_SEPARATOR."Res".DIRECTORY_SEPARATOR."site".DIRECTORY_SEPARATOR."img".DIRECTORY_SEPARATOR."products".DIRECTORY_SEPARATOR.$this->getprotduct().".jpg")){
+        if( file_exists($_SERVER["DOCUMENT_ROOT"].DIRECTORY_SEPARATOR."Res".DIRECTORY_SEPARATOR."site".DIRECTORY_SEPARATOR."img".DIRECTORY_SEPARATOR."products".DIRECTORY_SEPARATOR.$this->getidproduct().".jpg")){
 
-            $url = "/Res/site/img/products/".$this->getproduct().".jpg";
+            $url = "/Res/site/img/products/".$this->getidproduct().".jpg";
 
         }else{
 
