@@ -5,6 +5,7 @@ namespace Hcode\Model;
 use \Hcode\DB\Sql;
 use \Hcode\Model;
 use \Hcode\Model\Product;
+use \Hcode\Mailer;
 
 class Category extends Model {
 
