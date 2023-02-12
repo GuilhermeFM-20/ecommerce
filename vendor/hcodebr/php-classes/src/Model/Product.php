@@ -146,4 +146,6 @@ class Product extends Model{
         ]);
 
     }
+
+    
 }
