@@ -95,17 +95,23 @@
                                         <tbody>
                                             <tr class="cart-subtotal">
                                                 <th>Subtotal</th>
-                                                <td><span class="amount">${function="formatPrice($cart.vlsubtotal)"}</span></td>
+                                                {if="$cart.vlsubtotal != '' "}
+                                                    <td><span class="amount">$ {$cart.vlsubtotal}</span></td>
+                                                {/if}
                                             </tr>
 
-                                            <tr class="shipping">
-                                                <th>Frete</th>
-                                                <td>${function="formatPrice($cart.vlfreight)"} <small>prazo de {$cart.nrdays} dia(s)</small></td>
-                                            </tr>
+                                            {if="$cart.vlfreight != '' "}
+                                                <tr class="shipping">
+                                                    <th>Frete</th>
+                                                    <td>$ {function="formatPrice($cart.vlfreight)"} <small>prazo de {$cart.nrdays} dia(s)</small></td>
+                                                </tr>
+                                            {/if}
 
                                             <tr class="order-total">
                                                 <th>Total</th>
-                                                <td><strong><span class="amount">${function="formatPrice($cart.vltotal)"}</span></strong> </td>
+                                                {if="$cart.vltotal != '' "}
+                                                <td><strong><span class="amount">$ {function="formatPrice($cart.vltotal)"}</span></strong> </td>
+                                                {/if}
                                             </tr>
                                         </tbody>
                                     </table>

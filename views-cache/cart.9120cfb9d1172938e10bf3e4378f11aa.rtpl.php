@@ -100,17 +100,29 @@
                                         <tbody>
                                             <tr class="cart-subtotal">
                                                 <th>Subtotal</th>
-                                                <td><span class="amount">$<?php echo formatPrice($cart["vlsubtotal"]); ?></span></td>
+                                                <?php if( $cart["vlsubtotal"] != ''  ){ ?>
+
+                                                    <td><span class="amount">$ <?php echo htmlspecialchars( $cart["vlsubtotal"], ENT_COMPAT, 'UTF-8', FALSE ); ?></span></td>
+                                                <?php } ?>
+
                                             </tr>
 
-                                            <tr class="shipping">
-                                                <th>Frete</th>
-                                                <td>$<?php echo formatPrice($cart["vlfreight"]); ?> <small>prazo de <?php echo htmlspecialchars( $cart["nrdays"], ENT_COMPAT, 'UTF-8', FALSE ); ?> dia(s)</small></td>
-                                            </tr>
+                                            <?php if( $cart["vlfreight"] != ''  ){ ?>
+
+                                                <tr class="shipping">
+                                                    <th>Frete</th>
+                                                    <td>$ <?php echo formatPrice($cart["vlfreight"]); ?> <small>prazo de <?php echo htmlspecialchars( $cart["nrdays"], ENT_COMPAT, 'UTF-8', FALSE ); ?> dia(s)</small></td>
+                                                </tr>
+                                            <?php } ?>
+
 
                                             <tr class="order-total">
                                                 <th>Total</th>
-                                                <td><strong><span class="amount">$<?php echo formatPrice($cart["vltotal"]); ?></span></strong> </td>
+                                                <?php if( $cart["vltotal"] != ''  ){ ?>
+
+                                                <td><strong><span class="amount">$ <?php echo formatPrice($cart["vltotal"]); ?></span></strong> </td>
+                                                <?php } ?>
+
                                             </tr>
                                         </tbody>
                                     </table>

@@ -160,12 +160,16 @@ $app->get('/checkout',function(){
 
 $app->get('/login',function(){
 
+	//print_r($_POST);exit;
+
 	$page = new Page();
 
 	//echo var_dump(User::getError());exit;
 
 	$page->setTpl('login',[
-		'error'=>User::getError()
+		'error'=> User::getError(),
+		'errorRegister'=> User::getErrorRegister(),
+		'registerValues'=> ( isset($_SESSION['registerValues']) ) ? $_SESSION['registerValues'] : ['nome'=> '','email'=> '','phone'=> '']
 	]);
 
 });
@@ -195,4 +199,63 @@ $app->get('/logout',function(){
 	header('Location: /login');
 	exit;
 
+});
+
+$app->post('/register',function(){
+
+	$_SESSION['registerValues'] = $_POST;
+
+	if( !isset($_POST['nome']) || $_POST['nome'] == ''){
+		
+		User::setErrorRegister('Campo Nome não informado');
+		header('Location: /login');
+		exit;
+
+	}
+
+	if( !isset($_POST['email']) || $_POST['email'] == ''){
+		
+		User::setErrorRegister('Campo Email não informado');
+		header('Location: /login');
+		exit;
+
+	}
+
+	if( !isset($_POST['senha']) || $_POST['senha'] == ''){
+		
+		User::setErrorRegister('Campo Senha não informado');
+		header('Location: /login');
+		exit;
+
+	}
+
+	if( User::checkLoginExist($_POST['email'])){
+		
+		User::setErrorRegister('Email já em uso');
+		header('Location: /login');
+		exit;
+
+	}
+
+	
+
+	//print_r($_POST);exit;
+
+	$user = new User();
+
+	$user->setData([
+		'inadmin'=>0,
+		'deslogin'=>$_POST['email'],
+		'desperson'=>$_POST['nome'],
+		'desemail'=>$_POST['email'],
+		'despassword'=>$_POST['senha'],
+		'nrphone'=>$_POST['phone']
+	]);
+
+	$user->Save();
+
+	User::login($_POST['email'],$_POST['senha']);
+
+	header('Location: /checkout');
+	exit;
 });
