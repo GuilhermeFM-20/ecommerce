@@ -6,13 +6,23 @@ use Rain\Tpl;
 
 class Mailer{
 
-    const USERNAME = "teste@gmail.com";
-	const PASSWORD = "<?password?>";
-	const NAME_FROM = "Hcode Store";
 
 	private $mail;
 
-    public function _construct($toAndress, $toName, $subject, $tplName, $data = array()){
+    public function __construct($toAndress, $toName, $subject, $tplName, $data = array()){
+
+		$json = file_get_contents($_SERVER['DOCUMENT_ROOT']."/Mailer.json");
+	
+		$dados = (array)json_decode($json);
+
+		//echo $dados["USERNAME"];exit;
+
+		//print_r($data);exit;
+	
+		$user = $dados["USERNAME"];
+        $password = $dados["PASSWORD"];
+        $name = "Hcode Store";
+        
 
         $config = array(
 			"tpl_dir"       => $_SERVER["DOCUMENT_ROOT"]."/views/email/",
@@ -30,7 +40,15 @@ class Mailer{
 
 		$html = $tpl->draw($tplName, true);
 
-		$this->mail = new \PHPMailer;
+		$this->mail = new \PHPMailer();
+
+		$this->mail->SMTPOptions = array(
+			'ssl' => array(
+				'verify_peer' => false,
+				'verify_peer_name' => false,
+				'allow_self_signed' => true
+			)
+		);
 
 		//Tell PHPMailer to use SMTP
 		$this->mail->isSMTP();
@@ -59,39 +77,35 @@ class Mailer{
 		//Whether to use SMTP authentication
 		$this->mail->SMTPAuth = true;
 
-		//Username to use for SMTP authentication - use full email address for gmail
-		$this->mail->Username = Mailer::USERNAME;
+		//user to use for SMTP authentication - use full email address for gmail
+		$this->mail->Username = $user;
 
 		//Password to use for SMTP authentication
-		$this->mail->Password = Mailer::PASSWORD;
+		$this->mail->Password = $password;
 
 		//Set who the message is to be sent from
-		$this->mail->setFrom(Mailer::USERNAME, Mailer::NAME_FROM);
+		$this->mail->setFrom($user, $name);
 
 		//Set an alternative reply-to address
 		//$this->mail->addReplyTo('replyto@example.com', 'First Last');
 
 		//Set who the message is to be sent to
-		$this->mail->addAddress($toAddress, $toName);
+		$this->mail->addAddress($toAndress, $toName);
 
 		//Set the subject line
 		$this->mail->Subject = $subject;
 
 		//Read an HTML message body from an external file, convert referenced images to embedded,
 		//convert HTML into a basic plain-text alternative body
-		$this->mail->msgHTML($html);
+		$this->mail->msgHTML($html,__DIR__);
 
 		//Replace the plain text body with one created manually
 		$this->mail->AltBody = 'This is a plain-text message body';
 
-		//Attach an image file
-		//$mail->addAttachment('images/phpmailer_mini.png');
-
 
     }
 
-    public function send()
-	{
+    public function send(){
 
 		return $this->mail->send();
 
