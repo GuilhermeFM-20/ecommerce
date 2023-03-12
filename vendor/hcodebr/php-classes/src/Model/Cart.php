@@ -12,7 +12,8 @@ class Cart extends Model {
 	const SESSION = "Cart";
 	const SESSION_ERROR = "CartError";
 
-	public static function getFromSession(){
+	public static function getFromSession()
+	{
 
 		$cart = new Cart();
 
@@ -53,13 +54,15 @@ class Cart extends Model {
 
 	}
 
-	public function setToSession(){
+	public function setToSession()
+	{
 
 		$_SESSION[Cart::SESSION] = $this->getValues();
 
 	}
 
-	public function getFromSessionID(){
+	public function getFromSessionID()
+	{
 
 		$sql = new Sql();
 
@@ -75,7 +78,8 @@ class Cart extends Model {
 
 	}	
 
-	public function get(int $idcart){
+	public function get(int $idcart)
+	{
 
 		$sql = new Sql();
 
@@ -91,14 +95,8 @@ class Cart extends Model {
 
 	}
 
-	public function save(){
-
-        // var_dump($this->getidcart());
-        // var_dump($this->getdessessionid());
-        // var_dump($this->getiduser());
-        // var_dump($this->getdeszipcode());
-        // var_dump($this->getvlfreight());
-        // var_dump($this->getnrdays());exit;
+	public function save()
+	{
 
 		$sql = new Sql();
 
@@ -115,7 +113,8 @@ class Cart extends Model {
 
 	}
 
-	public function addProduct(Product $product){
+	public function addProduct(Product $product)
+	{
 
 		$sql = new Sql();
 
@@ -128,7 +127,8 @@ class Cart extends Model {
 
 	}
 
-	public function removeProduct(Product $product, $all = false){
+	public function removeProduct(Product $product, $all = false)
+	{
 
 		$sql = new Sql();
 
@@ -152,7 +152,8 @@ class Cart extends Model {
 
 	}
 
-	public function getProducts(){
+	public function getProducts()
+	{
 
 		$sql = new Sql();
 
@@ -171,8 +172,8 @@ class Cart extends Model {
 
 	}
 
-	public function getProductsTotals(){
-
+	public function getProductsTotals()
+	{
 
 		$sql = new Sql();
 
@@ -189,11 +190,12 @@ class Cart extends Model {
 			return $results[0];
 		} else {
 			return [];
-		} 
+		}
 
 	}
 
-	public function setFreight($nrzipcode){		
+	public function setFreight($nrzipcode)
+	{
 
 		$nrzipcode = str_replace('-', '', $nrzipcode);
 
@@ -201,12 +203,8 @@ class Cart extends Model {
 
 		if ($totals['nrqtd'] > 0) {
 
-			if ($totals['vlheight'] < 2){
-			 $totals['vlheight'] = 2;
-			}
-			if ($totals['vllength'] < 16){
-			$totals['vllength'] = 16;
-			} 
+			if ($totals['vlheight'] < 2) $totals['vlheight'] = 2;
+			if ($totals['vllength'] < 16) $totals['vllength'] = 16;
 
 			$qs = http_build_query([
 				'nCdEmpresa'=>'',
@@ -263,13 +261,15 @@ class Cart extends Model {
 
 	}
 
-	public static function setMsgError($msg){
+	public static function setMsgError($msg)
+	{
 
 		$_SESSION[Cart::SESSION_ERROR] = $msg;
 
 	}
 
-	public static function getMsgError(){
+	public static function getMsgError()
+	{
 
 		$msg = (isset($_SESSION[Cart::SESSION_ERROR])) ? $_SESSION[Cart::SESSION_ERROR] : "";
 
@@ -279,13 +279,15 @@ class Cart extends Model {
 
 	}
 
-	public static function clearMsgError(){
+	public static function clearMsgError()
+	{
 
 		$_SESSION[Cart::SESSION_ERROR] = NULL;
 
 	}
 
-	public function updateFreight(){
+	public function updateFreight()
+	{
 
 		if ($this->getdeszipcode() != '') {
 
@@ -295,7 +297,8 @@ class Cart extends Model {
 
 	}
 
-	public function getValues(){
+	public function getValues()
+	{
 
 		$this->getCalculateTotal();
 
@@ -303,7 +306,8 @@ class Cart extends Model {
 
 	}
 
-	public function getCalculateTotal(){
+	public function getCalculateTotal()
+	{
 
 		$this->updateFreight();
 

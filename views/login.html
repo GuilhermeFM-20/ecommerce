@@ -11,29 +11,18 @@
     </div>
 </div>
 
-<script>
-
-    function visible_register(){
-
-        var div = document.getElementById('register');
-
-        div.style.display = 'block';
-
-
-    }
-
-</script>
-
 <div class="single-product-area">
     <div class="zigzag-bottom"></div>
     <div class="container">
-        <div class="row ">                
-            <div class="col-md-6" style="flexcenter">
-                {if=" $error.msg != '' "}
-                    <div class="alert alert-{$error.type}" role="alert">
-                        {$error.msg}
-                    </div>
+        <div class="row">                
+            <div class="col-md-6">
+
+                {if="$error != ''"}
+                <div class="alert alert-danger">
+                    {$error}
+                </div>
                 {/if}
+
                 <form action="/login" id="login-form-wrap" class="login" method="post">
                     <h2>Acessar</h2>
                     <p class="form-row form-row-first">
@@ -53,19 +42,17 @@
                     </p>
                     <p class="lost_password">
                         <a href="/forgot">Esqueceu a senha?</a>
-                        <a href="#" onClick="visible_register()">Registre-se</a>
                     </p>
 
                     <div class="clear"></div>
                 </form>                    
             </div>
-            <div class="col-md-6" style="display:block;" id="register">
+            <div class="col-md-6">
                 
-
-                {if=" $errorRegister != '' "}
-                    <div class="alert alert-warning" role="alert">
-                        {$errorRegister}
-                    </div>
+                {if="$errorRegister != ''"}
+                <div class="alert alert-danger">
+                    {$errorRegister}
+                </div>
                 {/if}
 
                 <form id="register-form-wrap" action="/register" class="register" method="post">
@@ -88,7 +75,7 @@
                     <p class="form-row form-row-last">
                         <label for="senha">Senha <span class="required">*</span>
                         </label>
-                        <input type="password" id="senha" name="senha" class="input-text">
+                        <input type="password" id="senha" name="password" class="input-text">
                     </p>
                     <div class="clear"></div>
 
@@ -102,4 +89,3 @@
         </div>
     </div>
 </div>
-
