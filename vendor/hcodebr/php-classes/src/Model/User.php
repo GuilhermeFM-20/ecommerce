@@ -110,6 +110,26 @@ class User extends Model {
 
 	}
 
+	public static function passVerify($password){
+
+		//print_r($_SESSION[USER::SESSION]);exit;
+
+		$sql = new Sql();
+
+		$desperson = $_SESSION[USER::SESSION]['idperson'];
+
+		$results = $sql->select("SELECT * FROM tb_users a INNER JOIN tb_persons b ON a.idperson = b.idperson WHERE b.idperson = :person", array(
+			":person"=>$desperson
+		)); 
+
+		$data = $results[0];
+
+		echo "|".password_verify($password,$data["despassword"])."|";exit;
+
+		return false;
+
+	}
+
 	public static function logout(){
 
 		$_SESSION[User::SESSION] = NULL;

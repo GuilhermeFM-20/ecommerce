@@ -66,7 +66,7 @@
                     <p class="form-row form-row-first">
                         <label for="nome">Nome Completo <span class="required">*</span>
                         </label>
-                        <input type="text" id="nome" name="nome" class="input-text" value="">
+                        <input type="text" id="nome" name="nome" class="input-text" value="<?php echo htmlspecialchars( $registerValues["nome"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                     </p>
                     <p class="form-row form-row-first">
                         <label for="email">E-mail <span class="required">*</span>
