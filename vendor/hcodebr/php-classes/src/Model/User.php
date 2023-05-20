@@ -31,6 +31,8 @@ class User extends Model {
 
 	public static function checkLogin($inadmin = true){
 
+		
+
 		if (
 			!isset($_SESSION[User::SESSION])
 			||
@@ -76,7 +78,7 @@ class User extends Model {
 
 		$data = $results[0];
 
-		if (password_verify($password, $data["despassword"]) === true)
+		if (password_verify($password, $data["despassword"]) === false)
 		{
 
 			$user = new User();
@@ -489,6 +491,7 @@ class User extends Model {
 		];
 
 	} 
+
 
 }
 

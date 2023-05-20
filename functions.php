@@ -14,6 +14,12 @@ function formatPrice(float $vlprice){
 
 }
 
+function formatDate($date){
+
+    return date('d/m/Y',strtotime($date));
+
+}
+
 function checkLogin($inadmin = true){
 
     return User::checkLogin($inadmin);

@@ -188,6 +188,8 @@ $app->get("/checkout", function(){
 
 $app->post("/checkout", function(){
 
+	//print_r($_POST);exit;
+
 	User::verifyLogin(false);
 
 	if (!isset($_POST['zipcode']) || $_POST['zipcode'] === '') {
@@ -239,37 +241,49 @@ $app->post("/checkout", function(){
 
 	$cart = Cart::getFromSession();
 
-	$cart->getCalculateTotal();
+	$totals = $cart->getCalculateTotal();
 
 	$order = new Order();
 
 	$order->setData([
 		'idcart'=>$cart->getidcart(),
-		'idaddress'=>$address->getidaddress(),
+		'idaddress'=>10,
 		'iduser'=>$user->getiduser(),
 		'idstatus'=>OrderStatus::EM_ABERTO,
-		'vltotal'=>$cart->getvltotal()
+		'vltotal'=>$totals['vlprice'] + $cart->getvlfreight()
 	]);
+
+	// echo $cart->getidcart()."<br>";
+	// 	echo $address->getidaddress()."<br>";
+	// 	echo $user->getiduser()."<br>";
+	// 	echo OrderStatus::EM_ABERTO."<br>";
+	// 	echo $cart->getvltotal()."<br>";exit;
 
 	$order->save();
 
-	switch ((int)$_POST['payment-method']) {
-
-		case 1:
-		header("Location: /order/".$order->getidorder()."/pagseguro");
-		break;
-
-		case 2:
-		header("Location: /order/".$order->getidorder()."/paypal");
-		break;
-
-	}
-
+	header("Location: /order/".$order->getidorder());
 	exit;
+
+
+	// $order->save();
+
+	// switch ((int)$_POST['payment-method']) {
+
+	// 	case 1:
+	// 	header("Location: /order/".$order->getidorder()."/pagseguro");
+	// 	break;
+
+	// 	case 2:
+	// 	header("Location: /order/".$order->getidorder()."/paypal");
+	// 	break;
+
+	// }
+
+	// exit;
 
 });
 
-$app->get("/order/:idorder/pagseguro", function($idorder){
+$app->get("/order/:idorder", function($idorder){
 
 	User::verifyLogin(false);
 
@@ -277,22 +291,29 @@ $app->get("/order/:idorder/pagseguro", function($idorder){
 
 	$order->get((int)$idorder);
 
-	$cart = $order->getCart();
+	$page = new Page();
 
-	$page = new Page([
-		'header'=>false,
-		'footer'=>false
+	$page->setTpl("payment",[
+		'order'=>$order->getValues()
+		
 	]);
 
-	$page->setTpl("payment-pagseguro", [
-		'order'=>$order->getValues(),
-		'cart'=>$cart->getValues(),
-		'products'=>$cart->getProducts(),
-		'phone'=>[
-			'areaCode'=>substr($order->getnrphone(), 0, 2),
-			'number'=>substr($order->getnrphone(), 2, strlen($order->getnrphone()))
-		]
-	]);
+	// $cart = $order->getCart();
+
+	// $page = new Page([
+	// 	'header'=>false,
+	// 	'footer'=>false
+	// ]);
+
+	// $page->setTpl("payment-pagseguro", [
+	// 	'order'=>$order->getValues(),
+	// 	'cart'=>$cart->getValues(),
+	// 	'products'=>$cart->getProducts(),
+	// 	'phone'=>[
+	// 		'areaCode'=>substr($order->getnrphone(), 0, 2),
+	// 		'number'=>substr($order->getnrphone(), 2, strlen($order->getnrphone()))
+	// 	]
+	// ]);
 
 
 });
